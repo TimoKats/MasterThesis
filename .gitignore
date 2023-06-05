@@ -1,0 +1,24 @@
+# all the data
+
+tfidf/embeddings/**
+bert/embeddings/**
+tfidf/error_analysis/**
+data/**
+
+# some Python stuff
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# some file extensions
+
+*.o
+#*.sh
+*.txt
+*.json
+*.jsonl
+*.ipynb
+*.h
+*.csv
+*.txt
