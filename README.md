@@ -10,7 +10,7 @@ The experiment was run on a Windows 11 enviroment using the Windows Subsystem fo
 Some of the paths referred to in the source code are related to the machine the experiments were originally run on. Thus, these might not correlate with the layout of your device. Hence, feel free to change these filepaths on your local instance.  
 
 ### Data
-The experiment uses the RCV-1 v2 dataset for the experiments. This dataset is under the copyright of Reuters Ltd and/or Thomson Reuters. Hence, its contents are not published in this repository. However, if you have this dataset then you can load its (XML based) contents using the script `data_related/read_reuters.py`, which will return a json file. The contents of this file can then be used to push the data to Solr using `to_solr_bert.py` and 'to_solr_tfidf.py` after setting up Solr. More information on setting up Solr can be found in the next section. 
+The experiment uses the RCV-1 v2 dataset for the experiments. This dataset is under the copyright of Reuters Ltd and/or Thomson Reuters. Hence, its contents are not published in this repository. However, if you have this dataset then you can load its (XML based) contents using the script `data_related/read_reuters.py`, which will return a json file. The contents of this file can then be used to push the data to Solr using `to_solr_bert.py` and `to_solr_tfidf.py` after setting up Solr. More information on setting up Solr can be found in the next section. 
 
 ### Solr
 Most experiment use Solr as a search engine, which can be downloaded and installed for free at https://solr.apache.org/. Note, for the dense vector search, a version >9 needs to be installed. The version used in this research is Solr 9.2.0.  
