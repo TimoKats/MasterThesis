@@ -1,0 +1,29 @@
+<schema name="ms-marco" version="1.0">
+  <fieldType name="string" class="solr.StrField" omitNorms="true" positionIncrementGap="0"/>
+  <!-- vector-based field -->
+  <fieldType name="knn_vector348" class="solr.DenseVectorField" vectorDimension="384" omitNorms="true" similarityFunction="cosine"/>
+  <fieldType name="knn_vector768" class="solr.DenseVectorField" vectorDimension="768" omitNorms="true" similarityFunction="cosine"/>
+
+  <fieldType name="long" class="org.apache.solr.schema.LongPointField" docValues="true" omitNorms="true" positionIncrementGap="0"/>
+  <!-- basic text field -->
+  <fieldType name="text" class="solr.TextField">
+    <analyzer>
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+
+  <field name="id" type="string" indexed="true" stored="true" multiValued="false" required="false"/>
+  <field name="docId" type="string" indexed="true" stored="true" multiValued="false" required="false"/>
+  <field name="topic" type="string" indexed="true" stored="true" multiValued="true" required="false"/>
+  <field name="text" type="text" indexed="true" stored="true"/>
+
+  <!-- vector-based field -->
+  <field name="bertbase" type="knn_vector768" indexed="true" stored="true" multiValued="false"/>
+  <field name="bertl12" type="knn_vector348" indexed="true" stored="true" multiValued="false"/>
+  <field name="bertl6" type="knn_vector348" indexed="true" stored="true" multiValued="false"/>
+
+  <field name="_version_" type="long" indexed="true" stored="true" multiValued="false"/>
+  <uniqueKey>id</uniqueKey>
+
+</schema>
