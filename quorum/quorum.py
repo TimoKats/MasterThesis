@@ -25,8 +25,8 @@ def create_document_index(documents):
     '''
     create_document_index creates an inverted index using document identifiers.
 
-    :param documents: a list of documents
-    :return: dictionary with inverted index
+    :param documents: a list of (pre-processed) documents
+    :return: dictionary where the keys are words and the values are lists of document identifiers
     '''
     document_index = {}
     for index, article in enumerate(documents):

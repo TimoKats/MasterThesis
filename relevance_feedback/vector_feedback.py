@@ -66,7 +66,7 @@ def amplify_feedback(user_feedback, docIds) -> list:
     amplify_feedback adds embeddings from sibling paragraphs to the feedback
 
     :param docId: document identifier of the parent documents
-    :return: integer with amount of documents
+    :return: a list of vectors
     '''
     for docId in docIds:
         results = solr.search('docId:' + docId)
@@ -89,7 +89,7 @@ class VectorFeedback:
         average_vectors returns the average of a set of vectors
 
         :param feedback: list of vectors that resemble SBERT embeddings
-        :return: integer with amount of documents
+        :return: new vector
         '''
         feedback.append(self.embedding)
         self.embedding = list(np.mean(feedback, axis=0))
@@ -99,7 +99,7 @@ class VectorFeedback:
         amplify_feedback adds embeddings from sibling paragraphs to the feedback
 
         :param docId: document identifier of the parent document
-        :return: integer with amount of documents
+        :return: new vector
         '''
         feedback.append(self.embedding)
         self.embedding = list(np.add.reduce(feedback))
