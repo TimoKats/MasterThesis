@@ -1,12 +1,11 @@
 __file__ = 'bert_solr.py'
 __author__ = 'Timo Kats'
-__credits__ = ['Ludovic Jean-Louis', 'Zoe Gerolemou', 'Johannes Scholtes']
 __description__ = 'Conducts the experiment for BERT using dense vector search.'
 
 # libraries
 
-import pysolr, numpy as np,  pandas as pd, argparse
-from random import random, choice
+import pysolr, pandas as pd, argparse
+from random import random
 
 # solr
 
@@ -30,7 +29,13 @@ scores = {
     500: {"TP":0,"FP":0,"FN":0}
     }
 
-def update_scores(returned_documents):
+def update_scores(returned_documents) -> None:
+    '''
+    update_scores counts TPs FPs and FNs based on a relevance ranking
+
+    :param returned_documents: relevance ranking in a dictionary format
+    :return: None
+    '''
     for index, (docId, topic) in enumerate(returned_documents.items()):
         for threshold in scores.keys():
             if index <= threshold and args.Topic in topic:
@@ -40,7 +45,14 @@ def update_scores(returned_documents):
             elif index > threshold and args.Topic in topic:
                 scores[threshold]['FN'] += 1
 
-def update_scores_parcount(returned_documents, count_docIds):
+def update_scores_parcount(returned_documents, count_docIds) -> None:
+    '''
+    update_scores counts TPs FPs and FNs based on a relevance ranking (specified to paragraph count)
+
+    :param returned_documents: relevance ranking in a dictionary format
+    :param count_docIds: Matches per document in a dictionary format
+    :return: None
+    '''
     for index, docId in enumerate(count_docIds.items()):
         for threshold in scores.keys():
             if index <= threshold and args.Topic in returned_documents[docId]:
@@ -50,7 +62,13 @@ def update_scores_parcount(returned_documents, count_docIds):
             elif index > threshold and args.Topic in returned_documents[docId]:
                 scores[threshold]['FN'] += 1
 
-def get_documents(results):
+def get_documents(results) -> tuple:
+    '''
+    get_documents derives document ranking from returned paragraphs
+
+    :param results: relevance ranking in paragraphs
+    :return: Tuple of dictionaries that contian the document level paragraph rankings
+    '''
     count_docIds = {}
     first_docIds = []
     returned_documents = {}
@@ -64,7 +82,12 @@ def get_documents(results):
             first_docIds.append(result['docId'])
     return returned_documents, {k: v for k, v in sorted(count_docIds.items(), key=lambda item: item[1], reverse=True)}
 
-def export_results():
+def export_results() -> None:
+    '''
+    export_results gets the results and writes it to csv
+
+    :return: None
+    '''
     f = open('results/tfidf/random-mlt.csv', 'a+')
     for threshold, score in scores.items():
         recall = float(score["TP"] / (score["TP"] + score["FN"]))
@@ -73,7 +96,12 @@ def export_results():
         print(precision, recall, f1_score)
         f.write(args.Topic + ';' + str(threshold) + ';' + str(round(recall,4)) + ';' + str(round(precision,4))  + ';' + str(round(f1_score,4)) + '\n')
 
-def get_queries():
+def get_queries() -> pd.DataFrame:
+    '''
+    get_queries returns all queries for an experiment given a topic
+
+    :return: Dictionary of lists with query data (select first or random paragraph)
+    '''
     query_data = {"docId":[],"topic":[],"embedding":[], "id":[]}
     queries = solr.search('topic:(' + args.Topic + ')', **{'rows':7500})
     for query in queries:
@@ -82,7 +110,7 @@ def get_queries():
         query_data['embedding'].append(query['bertbase'])
         query_data['id'].append(query['id'])
     query_df = pd.DataFrame.from_dict(query_data)
-    return query_df.groupby('docId').sample(n=1).reset_index(drop=True) # random paragraph
+    return query_df.groupby('docId').sample(n=1).reset_index(drop=True) # .head(1) for first paragraph
 
 if __name__ == '__main__':
     args = parser.parse_args()

@@ -1,12 +1,10 @@
 __file__ = 'tfidf_solr.py'
 __author__ = 'Timo Kats'
-__description__ = 'Conducts the experiment for TFIDF using Solr MoreLikeThis.'
+__description__ = 'Conducts the experiment for TFIDF using Solr MoreLikeThis (document level).'
 
 # libraries
 
 import pysolr, argparse, json
-import numpy as np, pandas as pd
-from random import random
 
 solr = pysolr.Solr('http://localhost:8983/solr/tfidf')
 
@@ -28,10 +26,19 @@ args = parser.parse_args()
 
 # I/O functions
 
-def output_results(m,precision,recall,f1_score):
+def output_results(cutoff,precision,recall,f1_score) -> None:
+    '''
+    output_results gets the results and writes it to json
+
+    :param cutoff: int with current cutoff in the relevance ranking
+    :param precision: float with precision score
+    :param recall: float with recall score
+    :param f1_score: float with f1 score
+    :return: None
+    '''
     results = {
         "topic":args.Topic,
-        "top k":round(m,4),
+        "top k":round(cutoff,4),
         "precision":round(precision,5),
         "recall":round(recall,5),
         "f1_score": round(f1_score,5)
@@ -44,7 +51,14 @@ def output_results(m,precision,recall,f1_score):
 
 # solr functions
 
-def get_data(query, no_docs) -> tuple:
+def get_data(query, no_docs) -> None:
+    '''
+    get_data returns the documents for the MLT queries and updates the results dictionary
+
+    :param query: MLT query
+    :param no_docs: number of docs returned (just set this really high to get them all)
+    :return: None
+    '''
     results = solr.search(query, **{'rows':no_docs})
     for index, result in enumerate(results):
         update_results(result['topic'], index)
@@ -52,18 +66,36 @@ def get_data(query, no_docs) -> tuple:
 # tfidf (MoreLikeThis)
 
 def format_query(query) -> str:
+    '''
+    format_query gets the document and formats it as a solr MLT query
+
+    :param query: document identifier
+    :return: string with MLT query
+    '''
     return "({!mlt qf=text fl=topic}" + query + " AND topic:*)"
 
 # scoring
 
 def get_scores(results) -> tuple:
+    '''
+    get_scores takes the TP, FN, and FPs and returns precision/recall/f1 scores
+
+    :param results: dictionary with TPs, FPs and FNs
+    :return: Tuple with recall, precision and f1 score
+    '''
     recall = float(results["TP"] / (results["TP"] + results["FN"]))
     precision = float(results["TP"] / (results["TP"] + results["FP"]))
     f1_score = float((2*precision*recall)/(precision + recall))
     return round(precision,4), round(recall,4), round(f1_score,4)
 
 def update_results(topics, current_index):
-    global cutoffs
+    '''
+    update_results_cutoff adds results to the global result counter
+
+    :param current_index: the positition in the relevance ranking
+    :param topics: topics of the current returned document
+    :return: None
+    '''
     for cutoff, result in cutoffs.items():
         if cutoff >= current_index and args.Topic in topics:
             cutoffs[cutoff]["TP"] += 1
@@ -75,6 +107,11 @@ def update_results(topics, current_index):
 # get queries
 
 def get_queries():
+    '''
+    get_queries returns all queries for an experiment given a topic
+
+    :return: Dictionary of lists with query data
+    '''
     query_data = {"topic":[],"id":[], "text":[]}
     queries = solr.search('topic:(' + args.Topic + ')', **{'rows':300})
     for query in queries:

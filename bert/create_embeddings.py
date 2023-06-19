@@ -1,6 +1,5 @@
 __file__ = 'bert_solr.py'
 __author__ = 'Timo Kats'
-__credits__ = ['Ludovic Jean-Louis', 'Zoe Gerolemou', 'Johannes Scholtes']
 __description__ = 'Creates S-BERT embeddings for the BERT experiments.'
 
 # libraries
@@ -8,10 +7,21 @@ __description__ = 'Creates S-BERT embeddings for the BERT experiments.'
 from sentence_transformers import SentenceTransformer
 import pandas as pd, numpy as np
 
-def get_data():
+def get_data() -> pd.DataFrame:
+    '''
+    load_data reads the csv file that contains RCV-1 v2
+
+    :return: pandas dataframe
+    '''
     return pd.read_csv('paragraphs/test_paragraphs.csv', sep=';')
 
-def output_embeddings(embeddings):
+def output_embeddings(embeddings) -> None:
+    '''
+    output_embeddings outputs the SBERT embeddings to a .npy file
+
+    :param embeddings: Numpy array with SBERT embeddings
+    :return: None
+    '''
     filename = 'embeddings/mini/test_3.npy'
     with open(filename, 'wb') as file:
         np.save(file, embeddings)

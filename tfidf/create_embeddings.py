@@ -4,7 +4,7 @@ __description__ = 'Creates TFIDF embeddings for the SVM experiments.'
 
 # libraries
 
-import re, argparse, json, pandas as pd, numpy as np
+import argparse, pandas as pd, numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # initialize parser
@@ -15,13 +15,24 @@ args = parser.parse_args()
 
 # I/O functions
 
-def ouput_embeddings(embeddings, args):
+def ouput_embeddings(embeddings):
+    '''
+    output_embeddings outputs the TF-IDF embeddings to a .npy file
+
+    :param embeddings: Numpy array with TF-IDF embeddings
+    :return: None
+    '''
     filename = 'embeddings/svm.npy'
     with open(filename, 'wb') as file:
         np.save(file, embeddings)
     file.close()
 
 def load_stopwords():
+    '''
+    load_stopwords returns a list of stopwords from a text file
+
+    :return: list of stopwords
+    '''
     if args.Stopwords:
         file = open('../data/stopwords.txt', "r")
         stopwords = file.read()
@@ -30,6 +41,11 @@ def load_stopwords():
         return None
 
 def load_reuters():
+    '''
+    load_reuters reads the csv file that contains RCV-1 v2
+
+    :return: pandas dataframe
+    '''
     test = pd.read_csv('../data/svm/svm_test.csv', sep=';')
     train = pd.read_csv('../data/svm/svm_train.csv', sep=';')
     return list(train['text']) + list(test['text'])

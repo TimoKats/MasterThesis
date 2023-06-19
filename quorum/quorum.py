@@ -22,6 +22,12 @@ parser.add_argument("-n", "--N", help = "Recall")
 args = parser.parse_args()
 
 def create_document_index(documents):
+    '''
+    create_document_index creates an inverted index using document identifiers.
+
+    :param documents: a list of documents
+    :return: dictionary with inverted index
+    '''
     document_index = {}
     for index, article in enumerate(documents):
         for word in article:
@@ -41,6 +47,12 @@ class Quorum:
         self.n = n
 
     def query(self, query):
+        '''
+        query conducts a quorum search for a query
+
+        :param query: (pre-processed) list of query-terms
+        :return: dictionary of returned set of results
+        '''
         matches = {}
         for term in self.processed_documents[query]:
             for document in self.document_index[term]:
