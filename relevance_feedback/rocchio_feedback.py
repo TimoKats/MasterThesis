@@ -82,7 +82,7 @@ class RocchioFeedback:
         average_vectors returns the average of a set of vectors
 
         :param feedback: list of vectors that resemble SBERT embeddings
-        :return: integer with amount of documents
+        :return: new vector
         '''
         feedback.append(self.current_embedding)
         return list(np.mean(feedback, axis=0))
@@ -92,7 +92,7 @@ class RocchioFeedback:
         sum_vectors returns the sum of a set of vectors
 
         :param feedback: list of vectors that resemble SBERT embeddings
-        :return: integer with amount of documents
+        :return: new vector
         '''
         feedback.append(self.current_embedding)
         return list(np.add.reduce(feedback))
@@ -102,7 +102,7 @@ class RocchioFeedback:
         amplify_feedback adds embeddings from sibling paragraphs to the feedback
 
         :param docId: document identifier of the parent document
-        :return: integer with amount of documents
+        :return: None
         '''
         results = solr.search('docId:' + docId)
         for result in results:
