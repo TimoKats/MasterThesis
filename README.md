@@ -1,5 +1,5 @@
-# Using text similarity and relevance feedback to reduce review effort
-This repositiory contains the source code of Timo Kats' master thesis: *Using text similarity and relevance feedback to reduce review effort*. This thesis was written for the ICT in Business master program at the Leiden University and was part of a Data Science internship at ZyLAB. Credits to my supervisors: Ludovic Jean-Louis, Zoe Gerolemou, Jan Scholtes and Peter van der Putten.  
+# Using text similarity and relevance feedback to reduce review effort in eDiscovery
+This repositiory contains the source code of Timo Kats' master thesis: *Using text similarity and relevance feedback to reduce review effort in eDiscovery*. This thesis was written for the ICT in Business master program at the Leiden University and was part of a Data Science internship at ZyLAB. Credits to my supervisors: Ludovic Jean-Louis, Zoe Gerolemou, Jan Scholtes and Peter van der Putten.  
 
 ### Overview
 This repository consists of 5 folders: bert, tfidf, quorum, relevance_feedback and data_related. The first three of these folders refer to the text similarity experiments. For this, the TF-IDF and BERT (in the thesis also referred to as dense vector search) based experiments require Solr to be installed. For this, please see the section **Solr**.
