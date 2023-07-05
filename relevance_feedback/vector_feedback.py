@@ -41,7 +41,7 @@ def get_embeddings() -> list:
     :return: list with embeddings (either first or random paragraphs)
     '''
     query_data = {"docId":[], "embedding":[]}
-    queries = solr.search('topic:(' + args.Topic + ')', **{'rows':50})
+    queries = solr.search('topic:(' + args.Topic + ')', **{'rows':5000})
     for query in queries:
         query_data['docId'].append(query['docId'])
         query_data['embedding'].append(query['bertbase'])
