@@ -29,6 +29,7 @@ def export(result) -> None:
     '''
     filename = 'results/test/nonc_average.json'
     with open(filename, 'a+', encoding='utf-8') as f:
+        print(round(np.mean(result),3), round(np.std(result),3))
         f.write(str(round(np.mean(result),3)) + ';' + str(round(np.std(result),3)) + '\n')
 
 # solr
@@ -40,7 +41,7 @@ def get_embeddings() -> list:
     :return: list with embeddings (either first or random paragraphs)
     '''
     query_data = {"docId":[], "embedding":[]}
-    queries = solr.search('topic:(' + args.Topic + ')', **{'rows':5000})
+    queries = solr.search('topic:(' + args.Topic + ')', **{'rows':50})
     for query in queries:
         query_data['docId'].append(query['docId'])
         query_data['embedding'].append(query['bertbase'])
@@ -91,7 +92,7 @@ class VectorFeedback:
         :param feedback: list of vectors that resemble SBERT embeddings
         :return: new vector
         '''
-        feedback.append(self.embedding)
+        feedback.append(self.embedding) # cumulative feedback
         self.embedding = list(np.mean(feedback, axis=0))
 
     def sum_vectors(self, feedback) -> list:
@@ -101,7 +102,7 @@ class VectorFeedback:
         :param docId: document identifier of the parent document
         :return: new vector
         '''
-        feedback.append(self.embedding)
+        feedback.append(self.embedding) # cumulative feedback
         self.embedding = list(np.add.reduce(feedback))
 
     # query functions
@@ -143,9 +144,14 @@ class VectorFeedback:
                 docIds.add(result['docId'])
             else:
                 self.declined_documents.add(result['docId'])
-        self.sum_vectors(user_feedback)
+        self.sum_vectors(user_feedback) # you can change this!!!
 
-    def recall(self):
+    def recall(self) -> float:
+        '''
+        Returns the recall achieved in the current iteration of the feedback process.
+
+        :return: float
+        '''
         return len(self.collected_documents) / self.size
 
 # main
@@ -159,3 +165,4 @@ if __name__ == '__main__':
             vector_session.iterations += 1
         result.append(vector_session.iterations)
     export(result)
+

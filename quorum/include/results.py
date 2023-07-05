@@ -65,7 +65,7 @@ def get_scores(results) -> tuple:
     get_scores takes the TP, FN, and FPs and returns precision/recall/f1 scores
 
     :param results: dictionary with TPs, FPs and FNs
-    :return: Tuple with recall, precision and f1 score
+    :return: tuple with recall, precision and f1 score
     '''
     recall = float(results["TP"] / (results["TP"] + results["FN"]))
     precision = float(results["TP"] / (results["TP"] + results["FP"]))

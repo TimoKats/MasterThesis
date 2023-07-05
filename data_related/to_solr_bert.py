@@ -30,11 +30,11 @@ if __name__ == '__main__':
     #l12_embeddings = load_embeddings('medium')
     base_embeddings = load_embeddings('base')
 
-    for index, row in df.iterrows(): 
+    for index, row in df.iterrows():
         print(index)
         #l6_embedding = [float(w) for w in list(l6_embeddings[index])] 
         #l12_embedding = [float(w) for w in list(l12_embeddings[index])] 
-        base_embedding = [float(w) for w in list(base_embeddings[index])] 
+        base_embedding = [float(w) for w in list(base_embeddings[index])]
         topic = [x for x in ast.literal_eval(row["topic"])]
 
         data.append({"id": index, "topic":topic, "text":row["text"], "docId":row["docId"], "bertbase":base_embedding})
@@ -46,3 +46,4 @@ if __name__ == '__main__':
 
     solr.add(data, commit=True)
     solr.commit()
+
