@@ -2,7 +2,7 @@
 This repositiory contains the source code of Timo Kats' master thesis: *Using text similarity and relevance feedback to reduce review effort in eDiscovery*. This thesis was written for the ICT in Business master program at the Leiden University and was part of a Data Science internship at ZyLAB. Credits to my supervisors: Ludovic Jean-Louis, Zoe Gerolemou, Jan Scholtes and Peter van der Putten.  
 
 ### Overview
-This repository consists of 5 folders: bert, tfidf, quorum, relevance_feedback and data_related. The first three of these folders refer to the text similarity experiments. For this, the TF-IDF and BERT (in the thesis also referred to as dense vector search) based experiments require Solr to be installed. For this, please see the section **Solr**.
+This repository consists of 5 folders: bert, tfidf, quorum, relevance_feedback and data_related. The first three of these folders refer to the text similarity experiments. For this, the TF-IDF and BERT (in the thesis also referred to as dense vector search) based experiments require Solr to be installed. For this, please see the section **Solr**. Note, a tutorial on setting up the DVS experiments can be found [here](https://www.loom.com/share/47951dacf8ca4c64994d34add5fdb198?sid=bdf1436c-4e4e-4ab3-b8a1-5851b7644851)
 
 ### System information and requirements
 The experiment was run on a Windows 11 enviroment using the Windows Subsystem for Linux. The Python version for this was *Python 3.8.10*. Moreover, the experiments use a collection of libraries. These are listed (along with their version number) in `requirements.txt`. Finally, most experiments require Solr (at least version 9) to be installed. For this, please see section **Solr**.  
