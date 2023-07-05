@@ -7,6 +7,10 @@ This repository consists of 5 folders: bert, tfidf, quorum, relevance_feedback a
 ### System information and requirements
 The experiment was run on a Windows 11 enviroment using the Windows Subsystem for Linux. The Python version for this was *Python 3.8.10*. Moreover, the experiments use a collection of libraries. These are listed (along with their version number) in `requirements.txt`. Finally, most experiments require Solr (at least version 9) to be installed. For this, please see section **Solr**.  
 
+```python
+pip3 install -r requirements.txt
+```
+
 Some of the paths referred to in the source code are related to the machine the experiments were originally run on. Thus, these might not correlate with the layout of your device. Hence, feel free to change these filepaths on your local instance.  
 
 ### Data
@@ -44,3 +48,7 @@ The experiments are often run automatically using shell scripts. For this, a num
 | -m            | Refers to the precision of the Quorum operator | quorum.py                                                                                                                        |
 | -t            | Refers to the topic used in the experiment     | tfidf_solr.py,    tfidf_svm.py,   bert_solr.py,    quorum.py,   vector_feedback.py,  rocchio_feedback.py,  keyword_feedback.py,  |
 | -s            | Refers to the usage of stopwords (True/False)  | create_embeddings.py                                                                                                             |
+
+
+### Recommended readings
+ - https://sease.io/2023/01/apache-solr-neural-search-tutorial.html 
